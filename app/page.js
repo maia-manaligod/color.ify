@@ -32,6 +32,7 @@ export default function Home() {
   //console.log(cookieStore.getAll());
 
   let loggedIn = true;
+  let emailInvalid = false;
 
 
 
