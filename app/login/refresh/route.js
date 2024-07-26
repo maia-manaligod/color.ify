@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import {cookies} from 'next/headers'
 
-require("dotenv").config();
+//require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 const CLIENT_ID = process.env.CLIENT_ID;

@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from '@/node_modules/next/headers'
-require("dotenv").config();
+//require("dotenv").config();
 //create instance of supabase to run through the server -> return it
 
 export function createClient() {
