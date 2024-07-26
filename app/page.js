@@ -13,20 +13,22 @@ import RecentSongs from '@/components/RecentSongs'
 import { Navigation } from '@/components/Navigation'
 
 
+function Search(){
+  const searchParams = useSearchParams()
+  let emailInvalid = (errorCode != null && errorCode == 'Unverified email with spotify. A confirmation email has been sent to your spotify email');
+  console.log(emailInvalid)
 
+  console.log(errorCode);
+
+}
 
 
 
 export default function Home() {
 
   //const cookieStore = cookies();
-  const search = useSearchParams();
-  const errorCode = search.get('error_description');
-
-  let emailInvalid = (errorCode != null && errorCode == 'Unverified email with spotify. A confirmation email has been sent to your spotify email');
-  console.log(emailInvalid)
-
-  console.log(errorCode);
+  //const search = useSearchParams();
+  //const errorCode = search.get('error_description');
   //console.log(cookieStore.getAll());
 
   let loggedIn = true;
