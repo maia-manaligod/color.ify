@@ -29,7 +29,7 @@ export async function GET(request) {
     )
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      return NextResponse.redirect('http://localhost:3000/login')
+      return NextResponse.redirect(process.env.REDI_TO_LOGIN)
     }
   }
 

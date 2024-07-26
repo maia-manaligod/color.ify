@@ -32,7 +32,7 @@ export async function GET(request) {
     const login = await supabase.auth.signInWithOAuth({
       provider: 'spotify',
       options: {
-      redirectTo: `http://localhost:3000/login/supabase`,
+      redirectTo: process.env.SUPABASE_REDI,
       },
     })
     
