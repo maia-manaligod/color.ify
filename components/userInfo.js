@@ -10,8 +10,11 @@ export function GetUser(){
         getProfile()
         .then((results) => {
             if (results != false) {
+                console.log("results from getProfile(): ", results)
                 setResult(results);
                 setLoading(false);
+            } else {
+                console.log("results = ", results)
             }
         });
     }, []);
