@@ -37,16 +37,16 @@ export async function GET(request) {
     })
     
 
-  console.log("data returned by supabase after signin: ", login.data)
-  console.log("error returned by suapabse: ", login.error)
-  if (login.error){
-    redirect("/error");
-  }
- 
-  const auth_url = login.data.url
-  console.log("redirecting to: ", auth_url);
+    console.log("data returned by supabase after signin: ", login.data)
+    console.log("error returned by suapabse: ", login.error)
+    if (login.error){
+      redirect("/error");
+    }
+  
+    const auth_url = login.data.url
+    console.log("redirecting to: ", auth_url);
 
-  redirect (auth_url)
+    redirect (auth_url)
 
   }
   
