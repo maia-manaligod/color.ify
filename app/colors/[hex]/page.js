@@ -59,6 +59,7 @@ export default function color(hex){
     
 
     useEffect (() => {
+        console.log("HEX: ", hex)
         getColorPageInfo(hex.params.hex).then((results) => {
             setSongs(results.songInfo)
             setColorInfo(results.colorInfo)
@@ -95,10 +96,11 @@ export default function color(hex){
             console.log("after splice", arr)
             setSongs(arr)
         }
-        console.log(Song.props.object)
-        removeSongs([Song.props.object])
+        console.log(Song.props.object, colorHex)
+        removeSongs(Song.props.object, colorHex)
 
-        removeTracks(playlist.playlistId, [Song.props.object.spotify_uri])  
+        console.log("playlist null? ", playlist == null, playlist)
+        if (playlist.id != null) { removeTracks(playlist.playlistId, [Song.props.object.spotify_uri])  }
     }
    
     function deleteColorValue(val){

@@ -66,14 +66,26 @@ export async function pushSong(color, name, id, artists, album_id, albumName, im
         image_url : image, 
         spotify_uri: uri
     }
+
+    const songs_colorsObj = {
+        song_uri: uri, 
+        song_color: color,
+        user_id: user.id
+    }
+
     try {
-        const {error} = await supabase.from("songs").insert(songObj)
+        const {error} = await supabase.from("songs").upsert(songObj, {onConflict: 'spotify_uri'}, {ignoreDuplicates: true})
         if (error){
             console.log(error)
         } else {
             console.log("song push successful")
-            return {success: true}
-            
+            const {error2} = await supabase.from("songs_colors").insert(songs_colorsObj)
+
+            if (error2){
+                console.log(error2)
+            } else {
+                return {success: true}
+            } 
         }
     }
 
@@ -152,40 +164,73 @@ export async function getSongs(hex){
     let hexColor = "#" + hex; 
     console.log("color: ", hexColor)
 
+    /*
     const {data: songData, error: error} = await supabase
     .from('songs')
     .select('name, artist, album, image_url, spotify_uri')
     .match({user: user.id, color: hexColor})
+    */
+   const {data: songData, error: error} = await supabase
+   .rpc('get_songs_by_color', {user_color: hexColor, user_id: user.id })
 
 
     if (error){
         console.log(error)
     } 
     else {
+        console.log(songData)
         return {success: true, data: songData}
     }
 
 }
 
-export async function removeSongs(songsArray){
+export async function removeSongs(song, color){
     const supabase = createClient()
     let list = []
 
-    console.log("at supabase remove song: ", songsArray)
+    const {data: {user}} = await supabase.auth.getUser();
+    if (!user){
+        console.log("ERROR: NO USER")
+    }
 
+   // console.log("at supabase remove song: ", songsArray)
+/*
     songsArray.forEach((item) => {
         list.push(item.spotify_uri)
     })
+    */
 
     const {data: data, error: error} = await supabase
-        .from('songs')
+        .from('songs_colors')
         .delete()
-        .in('spotify_uri', list)
+        .match({user_id: user.id, song_color: color, song_uri : song.spotify_uri})
+
+     //   .in('song_uri', list)
 
     if (error){
         console.log("ERROR DELETING SONG IN SUPABSE", error)
     } else {
         console.log("supabase deletion successful")
+        const {data: data2,  error: error2} = await supabase
+        .from('songs_colors')
+        .select('song_uri')
+        .eq('song_uri', song.spotify_uri)
+        if (error2){
+            console.log("error finding if song still exists in songs_colors", error2)
+        }
+
+        console.log("data remaining: ", data2)
+        if (data2.length == 0){
+            console.log("deleting", song.spotify_uri)
+            const {data: data3, error: error3} = await supabase
+            .from('songs')
+            .delete()
+            .match({user: user.id, spotify_uri : song.spotify_uri})
+
+            if (error3){
+                console.log("ERROR DELETING LAST SONG", error3)
+            }
+        }
     }
 }
 
