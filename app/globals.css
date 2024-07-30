@@ -110,6 +110,11 @@
 }
 
 
+.unclickable {
+  pointer-events: none;
+  filter: saturate(40%) brightness(110%);
+}
+
 
 /*@tailwind base;
 @tailwind components;
