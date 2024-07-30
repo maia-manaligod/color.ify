@@ -23,12 +23,17 @@ export async function GET(request) {
       token_hash,
     })
     if (!error) {
+      console.log('no error, attempt to redi to login')
       redirectTo.searchParams.delete('next')
-      return NextResponse.redirect(redirectTo)
+
+      return NextResponse.redirect(process.env.REDI_TO_LOGIN)
+    } else {
+      console.log(error)
     }
   }
 
   // return the user to an error page with some instructions
+  
   redirectTo.pathname = '/error'
   return NextResponse.redirect(redirectTo)
 }

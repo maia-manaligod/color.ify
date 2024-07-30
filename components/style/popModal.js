@@ -17,11 +17,12 @@ export const Backdrop = styled.div`
 `
 
 export const ModalWrapper = styled.div`
-    position: fixed;
-    top: 50%;
-    left: 50%;
+objectFit: fill
+position: fixed;
+top: 50%;
+left: 50%;
     z-index: 4;
-    transform: translate(-50%, -50%);
+    transform: translate(-10%,0%);
     transform-origin: left top;
     max-width: 100%;
     height: auto;

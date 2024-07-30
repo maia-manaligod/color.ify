@@ -112,7 +112,7 @@
 
 .unclickable {
   pointer-events: none;
-  filter: saturate(40%) brightness(110%);
+  filter: saturate(40%) brightness(110%) opacity(50%);
 }
 
 

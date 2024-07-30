@@ -22,6 +22,19 @@ export async function pushColor(color, name, description){
         const {error} = await supabase.from("colors").insert(colorObj)
         if (error){
             console.log(error)
+            if (error.code == '23503'){
+                console.log("need to insert user")
+
+                const {data: data, error: error2} = await supabase.from('users').insert({id: user.id})
+                console.log("after user insert: ", data, error2)
+                if (error2) { console.log("error adding user from pushColor")}
+                else {
+                    const {error3} = await supabase.from("colors").insert(colorObj)
+                    if (error3) {
+                        console.log("wahhhhhhhh (color will not push even if user recorded")
+                    }
+                }
+            }
         } else {
             console.log("color push successful")
         }
@@ -329,7 +342,7 @@ export async function getSongsSearched(query, offset_int, number){
     else {
         try {
             const {data, error} = await supabase
-            .rpc('search_songs', {search_text: query, user_id: user.id, offset_int : offset_int, number: number})
+            .rpc('search_songs', {search_text: query, user_info: user.id, offset_int : offset_int, number: number})
 
             if (error) { console.log(error); throw error}
 

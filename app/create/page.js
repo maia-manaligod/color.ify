@@ -7,6 +7,8 @@ import SongSearch from '@/components/spotifyAPI/search'
 import { ChosenSong } from '@/components/songClient'
 import { pushSong, pushColor } from '@/components/supabase'
 import PopModal from '@/components/style/popModal'
+import { useRouter } from 'next/navigation'
+
 
 
 
@@ -17,6 +19,8 @@ export default function(){
 
     const [show, setShow] = useState(false)
     const modal = useRef(null)
+    
+    const router = useRouter()
 
     function setFinalHex(hex){
         setHex(hex)
@@ -45,10 +49,21 @@ export default function(){
         const description = formData.get('description')
         console.log("pushing at page, ", hex, title, description)
         pushColor(hex, title, description)
-        //console.log("pushing at page: ", selected, hex)
-        selected.map(item => {
-            pushSong(hex, item.Song.props.object.name, item.Song.props.object.id, item.Song.props.object.artists, item.Song.props.object.album.id, item.Song.props.object.album.name, item.Song.props.object.album.images[0].url, item.Song.props.object.uri)
+
+        const pushSongPromises = selected.map(item => {
+            pushSong(hex, item.Song.props.object.name, item.Song.props.object.id, 
+                item.Song.props.object.artists, 
+                item.Song.props.object.album.id, item.Song.props.object.album.name, 
+                item.Song.props.object.album.images[0].url, 
+                item.Song.props.object.uri
+            );
         })
+        //console.log("pushing at page: ", selected, hex)
+        Promise.all(pushSongPromises).then(() => {
+            console.log("songs pushed")
+            router.push('/colors')
+        })
+      
     }
 
 

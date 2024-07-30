@@ -129,36 +129,56 @@ export default function Home() {
                   </div>
 
                   <div className = "stpage colorGrid" >
-                  {colors.map((item) => (
-                    <a key = {item} href = {'/colors/' + item.hex.substring(1)}>
-                                  <div className = "colPage" >
-                                      <div style = {{width: "130px", height: "130px", backgroundColor: item.hex}}>
-                                      </div>
-                                      <p>{item.colorName}</p>
-                                
-                                  </div>
-
-                    </a>
-                  ))}
-                  <div>
-                    <a href = "/colors">see colors &gt;&gt;</a>
-                  </div>
+                  {(colors.length == 0) ? 
+                      <div className = "colPage">
+                         <a>you have no colors</a>
+                        <a href = "/colors">add a new color!</a>
+                      </div>
+                      :
+                      <div>
+                          {colors.map((item) => (
+                          <a key = {item} href = {'/colors/' + item.hex.substring(1)}>
+                                        <div className = "colPage" >
+                                            <div style = {{width: "130px", height: "130px", backgroundColor: item.hex}}>
+                                            </div>
+                                            <p>{item.colorName}</p>
+                                      
+                                        </div>
+      
+                          </a>
+                        ))}
+                        <div>
+                          <a href = "/colors">see colors &gt;&gt;</a>
+                        </div> 
+                      </div>
+                  }
+                 
                 
                 </div>
                 </div>
-
-
-
-
                 <div>
+
+                    {recentSongs.length == 0 ? 
+                      <div className = "colPage">
+                        <a>you have not added any songs yet.</a>
+                        <a href = "/create">start creating!</a>
+                      </div>
+                  
+                    :
+                    <div>
+
                     <h3>Recently Added</h3>
                     {recentSongs.map((item) => 
                         <div> 
                            <SongWithColor key = {item.id} object = {item}/>
                         </div>
                     )}
-                <a href = "/songs">see songs &gt;&gt;</a>
+                    
+                    <a href = "/songs">see songs &gt;&gt;</a>
+                    </div>
+                    }
                 </div> 
+                
 
 
 

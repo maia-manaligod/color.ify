@@ -67,7 +67,7 @@ const Sat = ({satX, offsetLeft, setSatX, setSquare, setHex, hue, light}) => {
             setHex(HSLToHex(hue, sat, light))
 
             setSatX(x)
-            
+
             setSquare([sat, light])
         }
 
@@ -75,7 +75,8 @@ const Sat = ({satX, offsetLeft, setSatX, setSquare, setHex, hue, light}) => {
             const x = computePosition(e)
             const sat = computeSat(x)
             setSatX(x)
-            console.log(light)
+            console.log("light: ", light)
+            console.log("hue:", hue)
             setSquare([sat, light])
             document.body.removeEventListener('mousemove', onMouseMove)
             document.body.removeEventListener('mouseup', onMouseUp)
