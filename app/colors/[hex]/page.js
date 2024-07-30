@@ -10,7 +10,7 @@ import { createNewPlaylist } from "@/lib/makePlaylist";
 import { ChosenSong } from "@/components/songClient";
 import { removeSongs } from "@/components/supabase";
 import { SongSearchSmall } from "@/components/spotifyAPI/search";
-import { removeTracks, unfollowPlaylist } from "@/lib/spotify";
+import { addTracks, removeTracks, unfollowPlaylist } from "@/lib/spotify";
 import { useRouter } from "next/router";
 
 
@@ -99,8 +99,8 @@ export default function color(hex){
         console.log(Song.props.object, colorHex)
         removeSongs(Song.props.object, colorHex)
 
-        console.log("playlist null? ", playlist == null, playlist)
-        if (playlist.id != null) { removeTracks(playlist.playlistId, [Song.props.object.spotify_uri])  }
+        console.log("playlist null? ", playlist.playlistId == null)
+        if (playlist.playlistId != null) { removeTracks(playlist.playlistId, [Song.props.object.spotify_uri])  }
     }
    
     function deleteColorValue(val){
@@ -140,6 +140,8 @@ export default function color(hex){
         arr.push(Song)
         console.log("array", arr)
         setSongs(arr)
+
+        if (playlist.id != null) {addTracks([Song.spotify_uri, playlist.id])}
     }
     
 
