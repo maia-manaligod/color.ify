@@ -9,12 +9,12 @@ export default function SongPage(){
     const [songs, setSongs] = useState([])
     const [recentSongs, setRecentSongs] = useState([])
     const [loading, setLoading] = useState(true)
-    const [range, setRange] = useState([0,30])
+    const [range, setRange] = useState([0,100])
 
     const [query, setQuery] = useState('')
 
     useEffect(() => {
-        getRecentSongs(range[0], range[1]).then((result) => {
+        getSongsSearched('', range[0], range[1]).then((result) => {
             setSongs(result)
             setLoading(false)
         })
@@ -46,7 +46,7 @@ export default function SongPage(){
         e.preventDefault(); 
         const formData = new FormData(e.target);
         console.log(formData.get('query'))
-        getSongsSearched(formData.get('query')).then((result) => {
+        getSongsSearched(formData.get('query'), range[0], range[1]).then((result) => {
                 setRecentSongs(songs)
                 console.log(result);
                 setSongs(result) 
