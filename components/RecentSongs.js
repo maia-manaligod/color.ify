@@ -8,9 +8,13 @@ export default function RecentSongs(){
 
     useEffect ( () => {
         getRecentSongs(0, 7).then((result) => {
-            console.log("RECENT SONGS:" , result)
-            setSongs(result)
-            setLoading(false)
+            if (result != null){
+                console.log("RECENT SONGS:" , result)
+                setSongs(result)
+                setLoading(false)
+
+            }
+            
         })
 
     }, [])

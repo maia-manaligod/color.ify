@@ -289,7 +289,11 @@ export async function getRecentSongs(offset, limit){
         data: {user},
     }  = await supabase.auth.getUser()
 
-    if (!user){console.log("error retreiving user when fetching revent songs")}
+
+    console.log("user:", user)
+
+    if (!user){console.log("error retreiving user when fetching recent songs")
+        return null}
 /*
     const {data: data, error: error} = await supabase
         .from('songs')
@@ -298,13 +302,15 @@ export async function getRecentSongs(offset, limit){
         .range(start, end)
         .order('created_at', { ascending: false });
 */
-
-    const {data: data, error: error} = await supabase
-    .rpc('get_recently_added_songs', {offset_int: offset, number: limit})
-    //console.log("retreving songs: ", data, error)
-    console.log("results:", data, error)
-    if(error){ console.log(error)}
-    if (!error){return data}
+    else {
+        const {data: data, error: error} = await supabase
+        .rpc('get_recently_added_songs', {offset_int: offset, number: limit, user_info : user.id})
+        //console.log("retreving songs: ", data, error)
+        console.log("results:", data, error)
+        if(error){ console.log(error)}
+        if (!error){return data}
+    }
+    
 
 }
 

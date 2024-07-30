@@ -11,7 +11,9 @@ import {useState, useEffect} from "react"
 import { getColors } from '@/components/supabase'
 import RecentSongs from '@/components/RecentSongs'
 import { Navigation } from '@/components/Navigation'
-
+import { getHomePageInfo } from '@/lib/getHomePageInfo'
+import { SongWithColor } from '@/components/song'
+import { Login } from '@/components/Login'
 
 function Search(){
   const searchParams = useSearchParams()
@@ -34,27 +36,43 @@ export default function Home() {
   let loggedIn = true;
   let emailInvalid = false;
 
-
-
-  const [result, setResult] = useState({});
   const[loading, setLoading] = useState(true);
+  const [loginState, setLoginState] = useState(0)
   const [colors, setColors] = useState([])
+  const [userInfo, setUserInfo] = useState(null)
+  const [recentSongs, setRecentSongs] = useState(null)
 
   useEffect(() => {
-    /*
       getSupaUser()
       .then((results) => {
+         console.log("get supa user: ", results)
           if (results != null) {
-              setResult(results);
+              //setResult(results);
+              setLoginState(1);
+              //setLoading(false);
+              getHomePageInfo().then((result) => {
+                console.log(result)
+                setUserInfo(result.spotifyProfile)
+                setColors(result.recentColors.colorData)
+                setRecentSongs(result.recentSongs)
+                setLoginState(1)
+                setLoading(false)
+              })
+          } else {
+              setLoginState(0)
               setLoading(false);
+
           }
       });
-
+/*
+      if (result){
+        getColors(6).then((results) => {
+          setColors(results.colorData)
+          setLoading(false)
+        })
+      }
       */
-      getColors(6).then((results) => {
-        setColors(results.colorData)
-        setLoading(false)
-      })
+      
   }, []);
 
   //const supaUser =  await getSupaUser();
@@ -66,30 +84,119 @@ export default function Home() {
   return (
     <>
     <div className = "stpage">
-      <Navigation/>
+     
       
-      <h1>colorify</h1>
+      
+      
 
 
       {emailInvalid &&
         <p>check your email to complete the login process</p>
       }
 
+      
+      
 
-      {!emailInvalid && !loggedIn && 
-        <a href = "/login"><button>(spotify) Log In</button> </a>
+      {loginState == 0 && 
+
+        <>
+        {loading && <p> Loading... </p>}
+      
+        {!loading && 
+          <div className = "stpage">
+            <Login/>
+          </div>
+        }
+        </>
       }
 
+      {loginState == 1 && 
       <div>
+
+          <Navigation/>
+
           {loading && <p> Loading... </p>}
+
+          {!loading && 
+
+          <div className = "stpage">
+            <h1>colorify</h1>
+            <div className = "rowPage">
+                <div className = "colPage">
+                  <div className = "rowPage">
+                        <img src = {userInfo.pic} style = {{width: "100px", height : "100px", borderRadius: "50%", margin: "10px"}}></img>
+                        <h1>{userInfo.name}</h1>
+                  </div>
+
+                  <div className = "stpage colorGrid" >
+                  {colors.map((item) => (
+                    <a key = {item} href = {'/colors/' + item.hex.substring(1)}>
+                                  <div className = "colPage" >
+                                      <div style = {{width: "130px", height: "130px", backgroundColor: item.hex}}>
+                                      </div>
+                                      <p>{item.colorName}</p>
+                                
+                                  </div>
+
+                    </a>
+                  ))}
+                  <div>
+                    <a href = "/colors">see colors &gt;&gt;</a>
+                  </div>
+                
+                </div>
+                </div>
+
+
+
+
+                <div>
+                    <h3>Recently Added</h3>
+                    {recentSongs.map((item) => 
+                        <div> 
+                           <SongWithColor key = {item.id} object = {item}/>
+                        </div>
+                    )}
+                <a href = "/songs">see songs &gt;&gt;</a>
+                </div> 
+
+
+
+                
+            </div>
+
+          </div>
+          
+          
+          }
+      </div>
+      }
+      </div>
+
+</>);
+
+
+
+
+
+
+
+
+
+
+/*
+
 
           <div className = "stpage rowPage">
             <div className = "colPage"> 
                 {loggedIn && 
                 <>
-                  <GetUser/>
+                  
                 </>
               }
+
+
+
               {!loading && 
                 <div className = "stpage colorGrid" >
                   {colors.map((item) => (
@@ -129,6 +236,7 @@ export default function Home() {
     
     </>
   );
+  */
 
 
 }
