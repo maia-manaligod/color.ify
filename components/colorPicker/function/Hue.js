@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import usePaintHue from './usePaintHue'
@@ -62,20 +62,21 @@ const Hue = ({hueX, offsetLeft, setHueX, setHue , setHex, sat, light}) => {
             return Math.round((x + barSize / 2) * (360/squareSize))
         }
 
-        const onMouseMove = (e) => {
+        function changeColor(e){
             const x = computePosition(e)
             const hue = computeHue(x)
-            setHex(HSLToHex(hue, sat, light))
-
             setHueX(x)
             setHue(hue)
+            console.log("hsl: ", hue, sat, light)
+            setHex(HSLToHex(hue, sat, light))
+        }
+
+        const onMouseMove = (e) => {
+            changeColor(e)
         }
 
         function onMouseUp(e){
-            const x = computePosition(e)
-            const hue = computeHue(x)
-            setHueX(x)
-            setHue(hue)
+            changeColor(e)
             document.body.removeEventListener('mousemove', onMouseMove)
             document.body.removeEventListener('mouseup', onMouseUp)
         }
@@ -94,7 +95,7 @@ const Hue = ({hueX, offsetLeft, setHueX, setHue , setHex, sat, light}) => {
             document.body.removeEventListener('mouseup', onMouseUp)
         }
 
-    }, [offsetLeft, setHue, setHueX])
+    }, [offsetLeft, setHue, setHueX, sat, light])
 
 
 

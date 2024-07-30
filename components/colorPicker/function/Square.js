@@ -90,6 +90,7 @@ const Square = ({
             setSquare([s,l])
             setSquareXY([x,y])
         
+            console.log("hue:", hue)
             setHex(HSLToHex(hue, s, l))
         }
 

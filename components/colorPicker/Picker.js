@@ -87,6 +87,8 @@ const Picker = ({setFinalHex}) => {
     const [hue, setHue] = useState(180)
     const [hueX, setHueX] = useState(() => squareSize/2 - barSize/2)
 
+    const [finalHex, setFinalizedHex] = useState(false)
+
 
 
     const[square, setSquare] = useState([100, 50]);
@@ -160,7 +162,14 @@ const Picker = ({setFinalHex}) => {
     }
 
     function onFinalizeHex(){
-        setFinalHex(hex);
+        if (!finalHex){
+            setFinalizedHex(true)
+            setFinalHex(hex)
+        } else {
+            setFinalizedHex(false)
+            setFinalHex('')
+        }
+        
     }
 
 
@@ -168,8 +177,8 @@ const Picker = ({setFinalHex}) => {
     return (
         
         <div className = "debug">
-            
             <PickerWrapper color = {color}>
+                <div className = {finalHex ? "unclickable" : ""}>
                 <Modal modal = {modal}>
                     <PickerOuter>
                                 <Square
@@ -198,20 +207,18 @@ const Picker = ({setFinalHex}) => {
                                     max = {[[360, 100, 100], "#FFFFFF"]}
                                     defaultValue = {[[hue, square[0], square[1]], hex]}
                                     setHex = {onHexChange}
-                                />
-                                <a>{hue} {square[0]} {square[1]}</a>
-
-                               
+                                />                 
                              
                                
                     </PickerOuter>
                 </Modal>
-         
+                </div>
+
                 <PickerInner>
                     <a></a>
                     <div className='swatch' />
                   
-                    <button onClick = {onFinalizeHex}>Next</button>
+                    <button onClick = {onFinalizeHex}>{finalHex ? "Back" : "Next"} </button>
                 </PickerInner>
                 
                 

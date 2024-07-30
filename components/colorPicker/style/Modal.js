@@ -14,8 +14,9 @@ export const ModalWrapper = styled.div`
     max-width: 100%;
     height; auto;
     
-    animation: ${zoom} 0.2s;
+   
 `
+//animation: ${zoom} 0.2s;
 
 //display : ${(p) => (p.show ? 'block' : 'none')};
 

@@ -50,7 +50,6 @@ export default function(){
             pushSong(hex, item.Song.props.object.name, item.Song.props.object.id, item.Song.props.object.artists, item.Song.props.object.album.id, item.Song.props.object.album.name, item.Song.props.object.album.images[0].url, item.Song.props.object.uri)
         })
     }
-    
 
 
     return(
