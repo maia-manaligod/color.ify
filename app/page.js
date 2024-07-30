@@ -51,7 +51,7 @@ export default function Home() {
       });
 
       */
-      getColors().then((results) => {
+      getColors(6).then((results) => {
         setColors(results.colorData)
         setLoading(false)
       })
@@ -103,9 +103,14 @@ export default function Home() {
 
                     </a>
                   ))}
+                  <div>
+                    <a href = "/colors">see colors &gt;&gt;</a>
+                  </div>
+                
       
                 </div>
-                }
+              }
+                
             </div>
 
 

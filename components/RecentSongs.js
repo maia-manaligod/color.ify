@@ -7,7 +7,7 @@ export default function RecentSongs(){
     const[loading, setLoading] = useState(true)
 
     useEffect ( () => {
-        getRecentSongs(0, 5).then((result) => {
+        getRecentSongs(0, 7).then((result) => {
             console.log("RECENT SONGS:" , result)
             setSongs(result)
             setLoading(false)

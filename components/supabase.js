@@ -95,7 +95,7 @@ export async function pushSong(color, name, id, artists, album_id, albumName, im
 
 }
 
-export async function getColors(){
+export async function getColors(limit){
     const supabase = createClient();
 
     const {data: {user}} = await supabase.auth.getUser();
@@ -104,26 +104,38 @@ export async function getColors(){
         redirect("/error")
     }
 
-    const {data: colorData, error: colorError} = await supabase
-    .from('colors')
-    .select('colorName, hex')
-    .eq('user', user.id)
-    .order('created_at', { ascending: false });
+    if (limit){
+        const {data: colorData, error: colorError} = await supabase
+        .from('colors')
+        .select('colorName, hex')
+        .eq('user', user.id)
+        .order('created_at', { ascending: false })
+        .limit(limit);
 
-    if (colorError){
-        console.log("error fetching colors: ", colorError)
-        return {success: false}
+        if (colorError){
+            console.log("error fetching colors: ", colorError)
+            return {success: false}
+        }
+
+        return {colorData}
     }
 
-    console.log("at supabase:", colorData)
+    else {
+        const {data: colorData, error: colorError} = await supabase
+        .from('colors')
+        .select('colorName, hex')
+        .eq('user', user.id)
+        .order('created_at', { ascending: false });
 
-
-
+        if (colorError){
+            console.log("error fetching colors: ", colorError)
+            return {success: false}
+        }
+        return {colorData}
+    }
+    
+    //console.log("at supabase:", colorData)
     //console.log("trimmed hex: ", trimmed)
-
-    return {colorData}
-
-
 }
 
 
