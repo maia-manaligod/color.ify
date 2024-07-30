@@ -88,8 +88,8 @@ export function SongWithColor({object}){
     return (
         <div className = "rowPage"> 
             <SongSupabase object = {object}/>
-            {object.songs_colors == null && <a href = {'/colors/' + object.color.substring(1)}> 
-                <div style = {{width: "60px", height: "60px", backgroundColor: object.color}}></div>
+            {object.songs_colors == null && <a href = {'/colors/' + object.song_color.substring(1)}> 
+                <div style = {{width: "60px", height: "60px", backgroundColor: object.song_color}}></div>
             </a>
             }
 

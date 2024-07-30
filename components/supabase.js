@@ -74,7 +74,7 @@ export async function pushSong(color, name, id, artists, album_id, albumName, im
     }
 
     try {
-        const {error} = await supabase.from("songs").upsert(songObj, {onConflict: 'spotify_uri'}, {ignoreDuplicates: true})
+        const {error} = await supabase.from("songs").upsert(songObj, {onConflict: 'spotify_uri'})
         if (error){
             console.log(error)
         } else {
@@ -270,7 +270,7 @@ export async function deleteColor(hex, redirectBool){
 }
 
 
-export async function getRecentSongs(start, end){
+export async function getRecentSongs(offset, limit){
     const supabase = createClient();
 
     const {
@@ -278,15 +278,20 @@ export async function getRecentSongs(start, end){
     }  = await supabase.auth.getUser()
 
     if (!user){console.log("error retreiving user when fetching revent songs")}
-
+/*
     const {data: data, error: error} = await supabase
         .from('songs')
         .select("*")
         .eq('user', user.id)
         .range(start, end)
         .order('created_at', { ascending: false });
+*/
 
+    const {data: data, error: error} = await supabase
+    .rpc('get_recently_added_songs', {offset_int: offset, number: limit})
     //console.log("retreving songs: ", data, error)
+    console.log("results:", data, error)
+    if(error){ console.log(error)}
     if (!error){return data}
 
 }
@@ -294,7 +299,7 @@ export async function getRecentSongs(start, end){
 
 
 
-export async function getSongsSearched(query){
+export async function getSongsSearched(query, offset_int, number){
     const supabase = createClient()
 
     const {
@@ -306,7 +311,7 @@ export async function getSongsSearched(query){
     else {
         try {
             const {data, error} = await supabase
-            .rpc('search_songs', {search_text: query, user_id: user.id})
+            .rpc('search_songs', {search_text: query, user_id: user.id, offset_int : offset_int, number: number})
 
             if (error) { console.log(error); throw error}
 
