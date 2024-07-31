@@ -46,6 +46,118 @@ export async function pushColor(color, name, description){
 }
 
 
+export async function pushSongs(color, array){
+    const supabase = createClient();
+
+    const {data: {user}} = await supabase.auth.getUser();
+    console.log(user)
+
+    let song_objects = array.map((item) => {return {
+        color: color,
+        name: item.name,
+        artist: item.artists.map((item) => 
+            { return item.name }
+        ),
+        album: item.album.name,
+        spotify_uri: item.uri,
+        user: user.id,
+        image_url: item.album.images[0].url,
+        song_id: item.id,
+        artist_id: item.artists.map((item) =>
+            {return item.id} 
+        ),
+        album_id: item.album.id
+    }})
+
+    let song_color_objects = array.map((item) => {
+        return {
+            song_uri: item.uri,
+            song_color: color, 
+            user_id : user.id
+        }
+    })
+
+    console.log(song_objects)
+
+    try {
+        const {error} = await supabase.from("songs").upsert(song_objects, {onConflict: 'spotify_uri'})
+        if (error){
+            console.log(error)
+        } else {
+            console.log("song push successful")
+            const {error2} = await supabase.from("songs_colors").insert(song_color_objects)
+
+            if (error2){
+                console.log("error pushing solor link" , error2)
+            } else {
+                return {success: true}
+            } 
+        }
+    }
+
+    catch (err){
+        console.log("ERROR: ", err)
+    }  
+
+
+/*
+    let artArray = []
+    let artIDArray = []
+    artists.forEach(item => {
+        artArray.push(item.name)
+        artIDArray.push(item.id)
+    }
+    )
+       
+    
+    console.log("artist array: ", artArray)
+    console.log("artistID", artIDArray)
+
+    console.log("in supabase: ", color, name, id, album_id, albumName)
+
+
+    const songObj = {
+        song_id: id, 
+        name: name,
+        color: color, 
+        user : user.id, 
+        artist: artArray, 
+        artist_id: artIDArray, 
+        album: albumName, 
+        album_id: album_id, 
+        image_url : image, 
+        spotify_uri: uri
+    }
+
+    const songs_colorsObj = {
+        song_uri: uri, 
+        song_color: color,
+        user_id: user.id
+    }
+
+    try {
+        const {error} = await supabase.from("songs").upsert(songObj, {onConflict: 'spotify_uri'})
+        if (error){
+            console.log(error)
+        } else {
+            console.log("song push successful")
+            const {error2} = await supabase.from("songs_colors").insert(songs_colorsObj)
+
+            if (error2){
+                console.log("error pushing solor link" , error2)
+            } else {
+                return {success: true}
+            } 
+        }
+    }
+
+    catch (err){
+        console.log("ERROR: ", err)
+    }  
+    */
+
+}
+
 export async function pushSong(color, name, id, artists, album_id, albumName, image, uri){
     const supabase = createClient();
 
@@ -95,7 +207,7 @@ export async function pushSong(color, name, id, artists, album_id, albumName, im
             const {error2} = await supabase.from("songs_colors").insert(songs_colorsObj)
 
             if (error2){
-                console.log(error2)
+                console.log("error pushing solor link" , error2)
             } else {
                 return {success: true}
             } 
@@ -281,10 +393,24 @@ export async function deletePlaylistSupabase(playlist_id){
 export async function deleteColor(hex, redirectBool){
     const supabase = createClient();
 
+    const {
+        data: {user},
+    }  = await supabase.auth.getUser()
+    if (!user){console.log("error retrieiving user when deleting color")}
+
+    const {data: data1, error: error1} = await supabase
+        .from('songs_colors')
+        .delete()
+        .match({song_color: hex, user_id: user.id})
+
+    if (error1){
+        console.log("error deleting songs when deleting color", error1)
+    }
+
     const {data: data, error: error} = await supabase
         .from('colors')
         .delete()
-        .eq('hex', hex)
+        .match({'hex': hex, user: user.id})
 
     if (error){
         console.log("ERROR DELETING color IN SUPABSE", error)
@@ -361,4 +487,36 @@ export async function getSongsSearched(query, offset_int, number){
 
         
     }
+}
+
+
+
+
+export async function updateColorInformation(title, description, color){
+    const supabase = createClient();
+
+    const {
+        data: {user},
+    }  = await supabase.auth.getUser()
+
+
+    console.log("user:", user)
+
+    if (!user){console.log("error retreiving user when updating playlist info")
+        return null}
+    else {
+        const {data: data, error: error} = await supabase
+        .from('colors')
+        .update({colorName: title, description: description})
+        .match({user: user.id, hex: color})
+
+        if (error){
+            console.log("error updating color info:",error)
+        } else {
+            console.log(data)
+            console.log("color info updated successfully")
+        }
+    }
+
+
 }

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 export const Backdrop = styled.div`
     position: fixed;
-    z-index: 3;
+    z-index: 0;
     top: 0;
     bottom: 0;
     left: 0;
@@ -21,8 +21,8 @@ objectFit: fill
 position: fixed;
 top: 50%;
 left: 50%;
-    z-index: 4;
-    transform: translate(-10%,0%);
+    z-index: 5;
+    transform: translate(10%,0%);
     transform-origin: left top;
     max-width: 100%;
     height: auto;

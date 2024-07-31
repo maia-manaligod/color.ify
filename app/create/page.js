@@ -5,7 +5,7 @@ import { Navigation } from '@/components/Navigation'
 import { useState, useRef } from 'react'
 import SongSearch from '@/components/spotifyAPI/search'
 import { ChosenSong } from '@/components/songClient'
-import { pushSong, pushColor } from '@/components/supabase'
+import { pushSong, pushColor, pushSongs } from '@/components/supabase'
 import PopModal from '@/components/style/popModal'
 import { useRouter } from 'next/navigation'
 
@@ -50,6 +50,30 @@ export default function(){
         console.log("pushing at page, ", hex, title, description)
         pushColor(hex, title, description)
 
+        const songs = selected.map((item) => {
+            return item.Song.props.object
+        })
+        console.log(songs)
+        /*
+        console.log("songs:", songs)
+
+        const songsArray = selected.map((item) => {
+            return {hex: hex, name: item.Song.props.object.name, song_id: item.Song.props.object.id, 
+            artists: item.Song.props.object.artists, 
+            album_id: item.Song.props.object.album.id, album: item.Song.props.object.album.name, 
+            image_url: item.Song.props.object.album.images[0].url, 
+            spotify_uri: item.Song.props.object.uri}
+        });
+        console.log("selected: ", selected)
+
+        console.log("songs array;" , songsArray)
+*/
+        pushSongs(hex, songs).then(
+            () => {
+                router.push('/colors')
+            }
+        )
+/*
         const pushSongPromises = selected.map(item => {
             pushSong(hex, item.Song.props.object.name, item.Song.props.object.id, 
                 item.Song.props.object.artists, 
@@ -59,10 +83,12 @@ export default function(){
             );
         })
         //console.log("pushing at page: ", selected, hex)
-        Promise.all(pushSongPromises).then(() => {
-            console.log("songs pushed")
-            router.push('/colors')
+        Promise.allSettled(pushSongPromises).then((results) => {
+            console.log("songs pushed", results)
+            //router.push('/colors')
+            console.log("router?")
         })
+        */
       
     }
 
