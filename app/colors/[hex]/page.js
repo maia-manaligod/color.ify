@@ -12,6 +12,7 @@ import { removeSongs } from "@/components/supabase";
 import { SongSearchSmall } from "@/components/spotifyAPI/search";
 import { addTracks, removeTracks, unfollowPlaylist } from "@/lib/spotify";
 import { useRouter } from "next/router";
+import UpdatePlaylistInfoForm from "@/components/updatePlaylistInfo";
 
 
 
@@ -143,6 +144,8 @@ export default function color(hex){
 
         if (playlist.id != null) {addTracks([Song.spotify_uri, playlist.id])}
     }
+
+    
     
 
 
@@ -177,8 +180,15 @@ export default function color(hex){
                     <div className = "rowPage">
                         <div style = {{width: "150px", height: "150px", backgroundColor: colorHex}}/>
                         <div className = "colPage stpage"> 
-                            <h3>{colorInfo.colorName}</h3>
-                            <p>{colorInfo.description}</p>
+                            {!edit && 
+                            <div>
+                                <h3>{colorInfo.colorName}</h3>
+                                <p>{colorInfo.description}</p>
+                            </div>
+                            }
+                            {edit && 
+                               <UpdatePlaylistInfoForm initialTitle = {colorInfo.colorName} initialDescription = {colorInfo.description} color = {colorHex} updateColorInfo = {setColorInfo}  changeEdit = {setEdit}/>
+                            }
                         </div>
                         <div>   
                             <button onClick= {() => {setShow(true); setDeletionStage(1)}}>delete color</button>
@@ -218,7 +228,7 @@ export default function color(hex){
 
 
                     <PopModal modal = {modal} show = {show} onClose ={() => {setShow(false); setDeletionStage(0)}}>
-                        <div className = "stpage popModal">
+                        <div className = "stpage popModal"> 
                             {deletionStage == 0 && <div></div>}
                             {deletionStage == 1 &&  
                                 <div>

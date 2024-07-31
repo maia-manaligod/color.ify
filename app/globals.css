@@ -68,6 +68,11 @@
   width: 400px; 
 }
 
+#descriptionsmall{
+  height: 80px;
+  width:400px;
+}
+
 #title {
   height: 40px; 
 }
@@ -101,6 +106,7 @@
 
 .popModal{
   background-color: white;
+  z-index: 5;
 }
 
 .colorGrid{
@@ -113,6 +119,13 @@
 .unclickable {
   pointer-events: none;
   filter: saturate(40%) brightness(110%) opacity(50%);
+}
+
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 

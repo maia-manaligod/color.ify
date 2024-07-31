@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Song } from "../song";
 import { SongSelect } from "../songClient";
 import { SongSupabase } from "../song";
-import { pushSong } from "../supabase";
+import { pushSongs } from "../supabase";
 import { addTracks } from "@/lib/spotify";
 
 export default function SongSearch({selected, setSelected}){
@@ -156,7 +156,7 @@ export function SongSearchSmall({hex, songArray, addToArray, playlist}){
             setResult(arr)
 
             //add to supabase
-            pushSong(hex, item.name, Song.props.object.id, Song.props.object.artists, Song.props.object.album.id, item.album, item.image_url, item.spotify_uri)
+            pushSongs(hex, [Song.props.object])
 
             //add to spotify, if playlist exists
             if (playlist != null){

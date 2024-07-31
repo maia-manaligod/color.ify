@@ -21,6 +21,11 @@ export function Navigation(){
                 <li>
                     <a href="/create">+</a>
                 </li>
+
+
+                <li>
+                    <a href="/login/signout">signout.</a>
+                </li>
                 
             
                 </ul>
