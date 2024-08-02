@@ -2,11 +2,11 @@
 
 export function Navigation(){
     return (
-        <>
+        <div style = {{backgroundColor: "#4AB19E", color: "#FFFFFF"}}>
             <ul className = "navigation">
                 <li>
             
-                    <a href="/">home.</a>
+                    <a href="/" style = {{fontSize: "30px"}}>color.ify</a>
 
                 </li>
 
@@ -23,13 +23,13 @@ export function Navigation(){
                 </li>
 
 
-                <li>
+                <li style = {{marginLeft: "auto"}}>
                     <a href="/login/signout">signout.</a>
                 </li>
                 
             
                 </ul>
            
-        </>
+        </div>
     )
 }

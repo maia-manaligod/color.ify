@@ -17,6 +17,7 @@ export default function(){
     const [hex, setHex] = useState();
     const [selected, setSelected] = useState([]);
 
+
     const [show, setShow] = useState(false)
     const modal = useRef(null)
     
@@ -98,27 +99,10 @@ export default function(){
         <Navigation />
         <div className = "stpage">
 
-            <div className = "rowPage">
+            <div className = "rowPage" style = {{display: "flex", justifyContent: "center"}}>
 
-                <div className = "colPage">
-                    <>select a color to get started</>
-                    <Picker setFinalHex = {setFinalHex}/>
-                    {selected != [] && 
-
-                        <ul>
-                        {selected.map(item => (
-                            <div style = {{width: "400px"}} >
-                                <ChosenSong Song = {item.Song} removeSong={removeSong} unselect = {item.unselect} show = {true}/>
-                            </div>
-                        ))}
-                        </ul> 
-                        }
-                </div>
-                
-
-
-                {hex && 
-                      <div>
+            {hex && 
+                      <div style = {{width: "500px"}}>
                             <div className = "rowPage">
                                 <PopModal modal={modal} show={show} onClose={() => setShow(false)}>
                                     <div className = "colPage" style = {{backgroundColor: "white", padding: "20px"}}>
@@ -156,6 +140,31 @@ export default function(){
                             <SongSearch selected = {selected} setSelected = {setSelected}/>
                         </div>
                 }
+
+
+
+
+                <div className = "colPage">
+                    {!hex && <a>select a color to get started</a>}
+                   
+                    <Picker setFinalHex = {setFinalHex}/>
+                 
+                    
+                    {selected != [] && 
+
+                        <ul>
+                        {selected.map(item => (
+                            <div style = {{width: "400px"}} >
+                                <ChosenSong Song = {item.Song} removeSong={removeSong} unselect = {item.unselect} show = {true}/>
+                            </div>
+                        ))}
+                        </ul> 
+                        }
+                </div>
+                
+
+
+                
 
 
 

@@ -74,27 +74,32 @@ export default function colorPage(){
               {
                     !loading &&  
                     <div>
-                        <div>
-                        <button className = {!sorted ? "disabled": ""} onClick={change}>recently added</button>
-                        <button className = {sorted ? "disabled": ""}onClick={change}>color</button>
-                        </div>
-                    <div className = "rowPage" style = {{gap: "40px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))"}}>
+                        <div className = "rowPage">
+                            <a className = "headerText"> my colors.</a>
+                            <div className = "filter" style = {{marginLeft: "auto"}}>
+                                <button className = {!sorted ? "disabled": ""} onClick={change}>recently added</button>
+                                <button className = {sorted ? "disabled": ""}onClick={change}>color</button>
+                            </div>
+                       </div>
+                    <div className = "rowPage" style = {{border: "2px solid red" , gap: "40px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))"}}>
                         {colors.map((item) => (
+                        <div className = "newColor">
                         <a key = {item.hex} href = {'/colors/' + item.hex.substring(1)}>
                              <div className = "colPage" >
-                                <div style = {{width: "150px", height: "150px", backgroundColor: item.hex}}>
+                                <div style = {{width: "150px", height: "150px", borderRadius: "5px", backgroundColor: item.hex}}>
                                 </div>
                                 <p>{item.colorName}</p>
                           
                             </div>
 
                         </a>
+                        </div>
                          
                         ))}
-                        <div>
+                        <div className = "newColor">
                             <a href = "/create">
-                            <button
-                                style = {{backgroundColor: "gray", width: "150px", height: "150px"}}
+                            <button 
+                                style = {{backgroundColor: "#dee3e7", width: "150px", height: "150px" , borderRadius: "5px", border: "1px solid gray"}}
             
                             >
                                 +

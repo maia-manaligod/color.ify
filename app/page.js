@@ -83,7 +83,7 @@ export default function Home() {
 
   return (
     <>
-    <div className = "stpage">
+    <div>
      
       
       
@@ -100,7 +100,7 @@ export default function Home() {
       {loginState == 0 && 
 
         <>
-        {loading && <p> Loading... </p>}
+        {loading && <p> </p>}
       
         {!loading && 
           <div className = "stpage">
@@ -111,7 +111,7 @@ export default function Home() {
       }
 
       {loginState == 1 && 
-      <div>
+      <div style = {{margin: "-10px"}}>
 
           <Navigation/>
 
@@ -119,44 +119,53 @@ export default function Home() {
 
           {!loading && 
 
-          <div className = "stpage">
-            <h1>colorify</h1>
+          <div className = "stpage" style = {{padding: "80px", alignContent: "center"}}>
             <div className = "rowPage">
-                <div className = "colPage">
-                  <div className = "rowPage">
-                        <img src = {userInfo.pic} style = {{width: "100px", height : "100px", borderRadius: "50%", margin: "10px"}}></img>
-                        <h1>{userInfo.name}</h1>
+                <div className = "colPage" style = {{gap: "40px"}}>
+                  <div className = "rowPage" style = {{gap: "20px"}}>
+                        <img src = {userInfo.pic} style = {{width: "120px", height : "120px", borderRadius: "50%", margin: "10px",marginBottom: "30px"}}></img>
+                        <h1 style = {{fontSize: "40px"}}>{userInfo.name}</h1>
                   </div>
 
-                  <div className = "stpage colorGrid" >
+                  <div>
+                  <div >
                   {(colors.length == 0) ? 
                       <div className = "colPage">
                          <a>you have no colors</a>
                         <a href = "/colors">add a new color!</a>
                       </div>
                       :
-                      <div>
-                          {colors.map((item) => (
-                          <a key = {item} href = {'/colors/' + item.hex.substring(1)}>
-                                        <div className = "colPage" >
-                                            <div style = {{width: "130px", height: "130px", backgroundColor: item.hex}}>
-                                            </div>
-                                            <p>{item.colorName}</p>
-                                      
-                                        </div>
-      
-                          </a>
-                        ))}
-                        <div>
+                      <div style = {{gap: "200px"}}> 
+                        <div className = "colorGrid">
+                            {colors.map((item) => (
+                            <a key = {item} href = {'/colors/' + item.hex.substring(1)}>
+                                          <div className = "colPage" >
+                                              <div style = {{width: "150px", height: "150px", backgroundColor: item.hex, borderRadius: "5px"}}>
+                                              </div>
+                                              <p>{item.colorName}</p>
+                                        
+                                          </div>
+        
+                            </a>
+                          ))}
+                          
+                        </div>
+                        <div style = {{textAlign: "right" ,marginTop: "20px"}}>
                           <a href = "/colors">see colors &gt;&gt;</a>
                         </div> 
                       </div>
-                  }
+                  } 
                  
                 
+                  </div>
+                  </div>
                 </div>
-                </div>
-                <div>
+                 
+                
+
+
+
+                <div style = {{padding: "90px", paddingTop: "0px", paddingLeft: "200px"}}>
 
                     {recentSongs.length == 0 ? 
                       <div className = "colPage">
@@ -173,16 +182,12 @@ export default function Home() {
                            <SongWithColor key = {item.id} object = {item}/>
                         </div>
                     )}
-                    
-                    <a href = "/songs">see songs &gt;&gt;</a>
+                    <div style = {{textAlign: "right"}}>
+                      <a href = "/songs">see songs &gt;&gt;</a>
+                    </div>
                     </div>
                     }
-                </div> 
-                
-
-
-
-                
+                </div>
             </div>
 
           </div>

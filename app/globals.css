@@ -1,14 +1,28 @@
+a {
+  text-decoration: none;
+  text-decoration-color: black;
+}
 
+a:link, a:visited{
+  color: black;
+}
+
+button{
+  font-family: "Karla", sans-serif;
+}
 
 .navigation {
   display: flex;
   list-style-type: none;
   padding: 20px;
-  padding-top: 30px;
-  color: #b6d5d8;
+  padding-top: 15px;
+  color: #ffffff;
 
   margin: -2px;
-  border: 2px solid red;
+  gap: 10px;
+  margin-top: -50px;
+  padding-top: 60px;
+  margin-right: 10px;
   
 }
 
@@ -20,15 +34,20 @@
 
   justify-content: center;
   align-items:center;
+  min-width: 150px;
+  
 
 
   color: #fceeee;
+}
+.navigation a{
+  color: 	#FFFFFF;
 }
 
 
 .stpage {
   padding: 30px; 
-  border: 2px solid blue;
+  border: 2px solid rgb(197, 197, 244);
 }
 
 .rowPage{
@@ -109,11 +128,13 @@
   z-index: 5;
 }
 
-.colorGrid{
-  gap: 40px;
+.colorGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))
+  gap: 10px 40px; /* Adjust gap as needed */
+  grid-template-columns: repeat(2, 150px);
 }
+
+
 
 
 .unclickable {
@@ -123,11 +144,46 @@
 
 
 .disabled {
-  opacity: 0.6;
+  opacity: 0.8;
   cursor: not-allowed;
   pointer-events: none;
 }
 
+.headerText{
+  font-size: 27px;
+}
+
+.filter{
+  display: flex;
+  gap: 15px;
+}
+
+.filter button{
+  width: 110px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid rgb(108, 178, 189)
+}
+
+.filter button:hover{
+  background-color: rgb(189, 214, 210);
+}
+
+.filter .disabled{
+  border: 1px solid rgb(39, 89, 76);
+  background-color: #79b7b0;
+  color: black;
+  
+}
+
+.newColor button{
+  transition: transform .2s;
+
+}
+
+.newColor:hover{
+  transform: scale(1.01);
+}
 
 /*@tailwind base;
 @tailwind components;

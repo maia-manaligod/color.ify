@@ -4,23 +4,23 @@ import { HexToHSL } from './utils'
 
 export const HexInputWrapper = styled.div`
     display: flex;
-    align-items: right;
-    user-select: none;
+    justify-content: flex-end;
+   
     label {
         margin-top: 5px;
         font-size: 15px;
         
     }
     input {
-        width: 80px; 
-        height: 20px;
+        width: 100px; 
+        height: 30px;
         text-align: center;
         border: 1px solid #ddd
         outline: 0;
         font-family: monospace;
         font-size: 13px;
         padding: 4px 4px;
-        margin: 5px;
+        margin: 10px;
         user-select: none;
         &:focus{
             background: #fafafa;
@@ -56,29 +56,13 @@ const HexInput = ({ label, value, max, min, defaultValue, setHex}) => {
         }
 
         
-        /*
-        console.log(e.target.value)
-        console.log("ass tess? ", /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e.target.value))
-        if (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e.target.value)){
-            console.log("value in input: ", e.target.value)
-            if(Number(e.target.value) > max){
-                newValue = max;
-            } else {
-                newValue = HexToHSL(e.target.value);
-            }
-        } else {
-            console.log("failed, passing ", defaultValue)
-            newValue = defaultValue
-        }
-        setHex(newValue)
-        */
 
         
         
     } 
-//1c717d
-//187 63 30
+
     return (
+
         <HexInputWrapper>
             <label>{label}</label>
             <input
@@ -89,6 +73,8 @@ const HexInput = ({ label, value, max, min, defaultValue, setHex}) => {
                 autoFocus = {false}
             />
         </HexInputWrapper>
+   
+ 
     )
 }
 

@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import Modal from './style/Modal'
 import Hue from './function/Hue'
 //import Sat from './function/Saturation'
@@ -9,7 +9,25 @@ import Square from './function/Square'
 import HexInput from './function/HexInput'
 import { HSLToHex, HextToHSL} from './function/utils'
 
+
 const {squareSize, barSize, crossSize} = config
+
+
+const shrink = keyframes`
+    from {
+        transform: scale(1);
+    } to {
+        transform: scale(.1);
+    }
+`
+
+const grow = keyframes`
+    from {
+        transform: scale(.1);
+    } to {
+        transform: scale(1);
+    }
+`
 
 
 export const PickerWrapper = styled.div`
@@ -21,8 +39,37 @@ export const PickerWrapper = styled.div`
     gap: 10px;
     .swatch{
         width: ${squareSize}px;
-        height: ${squareSize}px;
+        height: ${squareSize * 11/16}px;
         background: ${(p) => p.color};
+        border-radius: 5px;
+        animation-name: grow;
+        animation-duration: .5s;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    .swatchSmall{
+        width: ${squareSize}px;
+        height: ${squareSize * .25}px;
+        background: ${(p) => p.color};
+        border-radius: 5px;
+        animation-name: shrink;
+        animation-duration: .5s;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    @keyframes shrink{
+        from {
+            height: ${squareSize * 11/16}px;
+        } to {
+            height: ${squareSize * .25}px;
+        }
+    }
+    @keyframes grow {
+        from {
+            height: ${squareSize * .25}px;
+        } to {
+            height: ${squareSize * 11/16}px;
+        }
+
     }
 `
 //is (p) => the page? 
@@ -30,7 +77,10 @@ export const PickerWrapper = styled.div`
 export const PickerOuter = styled.div`
     width: ${squareSize + 20} px; 
     display: grid;
-    border-radius: 2px; 
+    border-radius: 5px; 
+    padding: 20px;
+    background-color: #edf2f2;
+    border: 2px solid #d6dbdb;
 `
 
 export const PickerInner = styled.div`
@@ -39,10 +89,8 @@ export const PickerInner = styled.div`
     display: flex;
     flex-direction: column;
     grid-template-rows: ${squareSize + 20}px 20px 1fr;
-    border: 2px solid red;
     margin-botton: 10px;
     .button{
-     
         width: 20px;
         height: 40px;
         border: 2px solid red;
@@ -88,6 +136,16 @@ const Picker = ({setFinalHex}) => {
     const [hueX, setHueX] = useState(() => squareSize/2 - barSize/2)
 
     const [finalHex, setFinalizedHex] = useState(false)
+
+    const [similarColors, setSimilarColors] = useState(
+        [{color: '#dee3e7', name: null },
+        {color: '#dee3e7', name: null },
+        {color: '#dee3e7', name: null },
+        {color: '#dee3e7', name: null },
+        {color: '#dee3e7', name: null }
+        ])
+    
+    
 
 
 
@@ -163,9 +221,14 @@ const Picker = ({setFinalHex}) => {
 
     function onFinalizeHex(){
         if (!finalHex){
+            document.getElementById('swatch').classList.remove('swatch')
+            document.getElementById('swatch').classList.add('swatchSmall')
+            
             setFinalizedHex(true)
             setFinalHex(hex)
         } else {
+            document.getElementById('swatch').classList.remove('swatchSmall')
+            document.getElementById('swatch').classList.add('swatch')
             setFinalizedHex(false)
             setFinalHex('')
         }
@@ -176,9 +239,10 @@ const Picker = ({setFinalHex}) => {
 
     return (
         
-        <div className = "debug">
+        <div>
             <PickerWrapper color = {color}>
-                <div className = {finalHex ? "unclickable" : ""}>
+                {!finalHex && <div className = {finalHex ? "unclickable" : ""}>
+                <div>
                 <Modal modal = {modal}>
                     <PickerOuter>
                                 <Square
@@ -190,6 +254,7 @@ const Picker = ({setFinalHex}) => {
                                     setSquareXY = {setSquareXY}
                                     setHex = {setHex}
                                 />
+                                <br></br>
                                 <Hue
                                     hueX = {hueX}
                                     offsetLeft = {offsetLeft}
@@ -199,27 +264,55 @@ const Picker = ({setFinalHex}) => {
                                     sat = {square[0]}
                                     light = {square[1]}
                                 />
+                                <div>
+                                    <HexInput
+                                        label = ""
+                                        value = {hex}
+                                        min = {[[0, 0, 0], "#000000"]}
+                                        max = {[[360, 100, 100], "#FFFFFF"]}
+                                        defaultValue = {[[hue, square[0], square[1]], hex]}
+                                        setHex = {onHexChange}
+                                    />  
 
-                                <HexInput
-                                    label = ""
-                                    value = {hex}
-                                    min = {[[0, 0, 0], "#000000"]}
-                                    max = {[[360, 100, 100], "#FFFFFF"]}
-                                    defaultValue = {[[hue, square[0], square[1]], hex]}
-                                    setHex = {onHexChange}
-                                />                 
+                                </div>
+                                              
                              
                                
                     </PickerOuter>
                 </Modal>
                 </div>
 
-                <PickerInner>
-                    <a></a>
-                    <div className='swatch' />
-                  
-                    <button onClick = {onFinalizeHex}>{finalHex ? "Back" : "Next"} </button>
-                </PickerInner>
+                <div style = {{width: "20px"}}></div>
+                </div>
+}
+                <div className = "colPage" style = {{display: "flex", gap: "30px", alignItems: "end"}}>
+                    <PickerInner>
+                        <a></a>
+                        <div id = "swatch" className='swatch' />
+                        </PickerInner>
+
+                        {!finalHex && 
+                        <div className = "colPage" style = {{display: "flex", gap: "10px"}}>
+                            <a>similar colors you've created</a>
+                            <div className = "rowPage" style = {{ backgroundColor: "#edf2f2", borderRadius: "5px", border: "2px solid #d6dbdb", padding: "10px", display: "flex", gap: "18px"}}>
+                                {similarColors.map((item) => (
+                                    <div style = {{borderRadius: "5px", width: "60px", height: "60px", backgroundColor: item.color}}>
+                                        
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        </div>
+                        }
+                       
+                        
+                        <button style = {{width: "100px" , height: "40px"}}onClick = {onFinalizeHex}>{finalHex ? "Back" : "Next"} </button>
+
+                </div>
+               
+                
                 
                 
             </PickerWrapper>
