@@ -62,7 +62,6 @@ export async function GET(request) {
       redirect_uri: RED_URI,
       state: state
     }));
-
   }
   /*
 

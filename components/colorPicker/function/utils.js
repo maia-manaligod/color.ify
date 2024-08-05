@@ -93,7 +93,7 @@ export function HexToHSL(hex){
 
 
     const res = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(result);
-    console.log(res);
+
 /*
     if (!result){
         throw new Error("Could not parse Hex Color")

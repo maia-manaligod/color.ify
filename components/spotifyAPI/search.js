@@ -22,8 +22,7 @@ export default function SongSearch({selected, setSelected}){
                 setLoading(false);
                 setSearched(true)
             
-        });
-        
+        }); 
     };
 
     function addSong({Song, unselect}){
@@ -57,47 +56,32 @@ export default function SongSearch({selected, setSelected}){
 
 
     return (
-        <div>
-            <a>search for a song </a>
-                    <form>
-                        <input name = "text"></input>
-                        <button formAction = {onClick}>search</button>
-                    </form>
-           
+        <div >
+            <div style = {{ position: "absolute"}}>
+                <a>search for a song </a>
+                        <form>
+                            <input name = "text"></input>
+                            <button formAction = {onClick}>search</button>
+                        </form>
+
+            </div>
+
+            
+            <div style = {{paddingTop: "50px"}}>
             {loading && <a>loading</a>}
 
             {searched && result &&
                 <div>
-                    <ul>
-                        {result.map(item => (
+                        {result != {} && result.map(item => (
                             <SongSelect 
                                 Song = {<Song object = {item} />} 
                                 addSong = {addSong}
                                 removeSong = {removeSong}
-
                             />
-    
-                        
                         ))}
-                    </ul> 
-
-                          
-         
-                        <ul>
-                        {selected != [] && selected.map(item => (
-                            <a>item added</a>
-    
-                        
-                            ))}
-                        </ul>   
-              
                 </div>
-                    
-                    
-              
-              
-
             }
+            </div>
            
         </div>
     )

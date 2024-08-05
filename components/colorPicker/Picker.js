@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect, useImperativeHandle, forwardRef} from 'react'
 import styled, {keyframes} from 'styled-components'
 import Modal from './style/Modal'
 import Hue from './function/Hue'
@@ -124,42 +124,31 @@ function computeSquareXY(s, l){
 
     return [x, y]
    
-}
+};
 
-const Picker = ({setFinalHex}) => {
+const Picker = forwardRef(({setFinalHex, setCurrentColor, setHex, hex, currentColor}, ref) => {
     const[show, setShow] = useState(true)
 
-    const [color, setColor] = useState(`hsla(180, 100%, 50%, 1)`)
-    const [hex, setHex] = useState("#00ffff")
+    const [color, setColor] = useState(currentColor)
+    //const [hex, setHex] = useState("#00ffff")
 
     const [hue, setHue] = useState(180)
     const [hueX, setHueX] = useState(() => squareSize/2 - barSize/2)
 
     const [finalHex, setFinalizedHex] = useState(false)
 
-    const [similarColors, setSimilarColors] = useState(
-        [{color: '#dee3e7', name: null },
-        {color: '#dee3e7', name: null },
-        {color: '#dee3e7', name: null },
-        {color: '#dee3e7', name: null },
-        {color: '#dee3e7', name: null }
-        ])
-    
-    
-
-
-
     const[square, setSquare] = useState([100, 50]);
     const [squareXY, setSquareXY] = useState(() => [
         squareSize - crossSize / 2, 
         crossSize / -2
-    ])
+    ]);
 
     const [offsetTop, setOffsetTop] = useState(0)
     const [offsetLeft, setOffsetLeft] = useState(0)
 
-   
     const modal = useRef(null)
+
+
 
     useEffect(() => {
         function setOffsets(){
@@ -183,7 +172,14 @@ const Picker = ({setFinalHex}) => {
 
     useEffect(() => {
         setColor(`hsla(${hue}, ${square[0]}%, ${square[1]}%, 1)`)
+        setCurrentColor([hue, square[0], square[1]])
     }, [hue, square])
+
+    useImperativeHandle(ref, () => {
+        return {
+            onHexChange,
+        };
+    }, []);
 
 /*
     function onHueChange(n){
@@ -209,6 +205,7 @@ const Picker = ({setFinalHex}) => {
     */
 
     function onHexChange([n, h]){
+        console.log("onHexChange")
         setHex(h);
 
         setHue(n[0]);
@@ -233,7 +230,7 @@ const Picker = ({setFinalHex}) => {
             setFinalHex('')
         }
         
-    }
+    };
 
 
 
@@ -284,43 +281,14 @@ const Picker = ({setFinalHex}) => {
 
                 <div style = {{width: "20px"}}></div>
                 </div>
-}
-                <div className = "colPage" style = {{display: "flex", gap: "30px", alignItems: "end"}}>
-                    <PickerInner>
-                        <a></a>
-                        <div id = "swatch" className='swatch' />
-                        </PickerInner>
-
-                        {!finalHex && 
-                        <div className = "colPage" style = {{display: "flex", gap: "10px"}}>
-                            <a>similar colors you've created</a>
-                            <div className = "rowPage" style = {{ backgroundColor: "#edf2f2", borderRadius: "5px", border: "2px solid #d6dbdb", padding: "10px", display: "flex", gap: "18px"}}>
-                                {similarColors.map((item) => (
-                                    <div style = {{borderRadius: "5px", width: "60px", height: "60px", backgroundColor: item.color}}>
-                                        
-                                    </div>
-
-                                ))}
-
-                            </div>
-
-                        </div>
-                        }
-                       
-                        
-                        <button style = {{width: "100px" , height: "40px"}}onClick = {onFinalizeHex}>{finalHex ? "Back" : "Next"} </button>
-
-                </div>
-               
-                
-                
+                }
                 
             </PickerWrapper>
           
             </div>
         
     )
-}
+});
 
 export default Picker
 

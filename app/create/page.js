@@ -1,13 +1,15 @@
 "use client"
 
-import Picker from '@/components/colorPicker/Picker'
+import OuterPicker from '@/components/colorPicker/OuterPicker'
 import { Navigation } from '@/components/Navigation' 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import SongSearch from '@/components/spotifyAPI/search'
 import { ChosenSong } from '@/components/songClient'
-import { pushSong, pushColor, pushSongs } from '@/components/supabase'
+import { pushSong, pushColor, pushSongs, getColors } from '@/components/supabase'
 import PopModal from '@/components/style/popModal'
 import { useRouter } from 'next/navigation'
+import { HexToHSL } from '@/components/colorPicker/function/utils'
+
 
 
 
@@ -19,9 +21,22 @@ export default function(){
 
 
     const [show, setShow] = useState(false)
+    const[search, setSearched] = useState(false)
     const modal = useRef(null)
+    const [loading, setLoading] = useState(false)
+    const [existingColors, setExistingColors] = useState([])
     
     const router = useRouter()
+
+
+    useEffect(() => {
+        getColors().then((results) => {
+            let hues = results.map((item) => {return {name: item.colorName, hsl: HexToHSL(item.hex)[0], hex: item.hex}})
+            //console.log(hues)
+            setExistingColors(hues)
+            setLoading(true)
+        })
+    }, [])
 
     function setFinalHex(hex){
         setHex(hex)
@@ -96,16 +111,21 @@ export default function(){
 
     return(
         <>
+        {loading && 
+        <>
         <Navigation />
-        <div className = "stpage">
+        <div className = "stpage" style = {{display: "flex", justifyContent: "center"}}>
 
-            <div className = "rowPage" style = {{display: "flex", justifyContent: "center"}}>
+            <div className = "rowPage" style = {{display: "flex"}}>
 
-            {hex && 
+            
+            <div style = {{position: "absolute"}}>
+            {setSearched && 
                       <div style = {{width: "500px"}}>
                             <div className = "rowPage">
+                                <div style = {{zIndex: 5}}>
                                 <PopModal modal={modal} show={show} onClose={() => setShow(false)}>
-                                    <div className = "colPage" style = {{backgroundColor: "white", padding: "20px"}}>
+                                    <div className = "colPage forward" style = {{backgroundColor: "white", padding: "20px"}}>
                                         <div className = "rowPage">
                                             <div style = {{width: "200px", height: "200px", backgroundColor: hex}}></div>
                                            
@@ -133,36 +153,54 @@ export default function(){
                                     
                                     </div>
                                 </PopModal>
-                                <a>spotify</a>
-                                {(selected.length != 0) && <button onClick={() => setShow(true)} style = {{height: "20px"}}>save</button>}
+                                </div>
+
+
+
+                            <div>
+                                <div className = {search ? "" : "clear"} style = {{ width : "700px", position: "relative", zIndex: 3, border: "2px solid red"}}>
+                                    <a>spotify</a>
+                                
+                                        <SongSearch selected = {selected} setSelected = {setSelected}/>
+                                
+                                
+                                </div>
+                            
+                            
+                            </div>
                             </div>
                             
-                            <SongSearch selected = {selected} setSelected = {setSelected}/>
                         </div>
                 }
+                </div>
 
 
+             
 
-
-                <div className = "colPage">
+                <div className = "colPage" style = {{  justifyContent: "center" , border: "2px solid blue", zIndex: 0}}>
                     {!hex && <a>select a color to get started</a>}
-                   
-                    <Picker setFinalHex = {setFinalHex}/>
-                 
+                    <div style = {{border: "2px solid green"}}>
+                        <OuterPicker setFinalHex = {setFinalHex} setShow = {setShow} setSearched = {setSearched} existingColors = {existingColors}/>
+                    </div>
                     
-                    {selected != [] && 
-
-                        <ul>
-                        {selected.map(item => (
-                            <div style = {{width: "400px"}} >
-                                <ChosenSong Song = {item.Song} removeSong={removeSong} unselect = {item.unselect} show = {true}/>
+                    <div style = {{display: "flex", justifyContent: "end"}}>
+                        {selected != [] && 
+                            <div style = {{zIndex: "-1"}}>
+                            <ul>
+                            {selected.map(item => (
+                                <div style = {{width: "400px"}} >
+                                    <ChosenSong Song = {item.Song} removeSong={removeSong} unselect = {item.unselect} show = {true}/>
+                                </div>
+                            ))}
+                            </ul>
                             </div>
-                        ))}
-                        </ul> 
-                        }
+                            }
+
+                    </div>
+                   
                 </div>
                 
-
+        
 
                 
 
@@ -170,6 +208,9 @@ export default function(){
 
             </div>
         </div>
+        </>
+        }
+        
         </>
     )
 }

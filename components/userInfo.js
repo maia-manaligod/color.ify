@@ -26,7 +26,11 @@ export function GetUser(){
             {!loading &&
                 <div className = "stpage rowPage">
                 <img src = {result.pic} style = {{width: "100px", height : "100px", borderRadius: "50%", margin: "10px"}}></img>
-                <h1>{result.name}</h1>
+                <div className = "colPage">
+                    <h1>{result.name}</h1>
+                    <a href = {result.url}>see in spotify&gt;&gt; </a>
+                </div>
+               
                 </div>
 
              }

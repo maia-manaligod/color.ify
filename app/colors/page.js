@@ -16,7 +16,7 @@ export default function colorPage(){
     useEffect(() => {
         getColors().then((results) => {
             console.log(results)
-            setColors(results.colorData)
+            setColors(results)
             setLoading(false)
             
         })

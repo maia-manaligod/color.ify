@@ -224,7 +224,6 @@ export async function getColors(limit){
     const supabase = createClient();
 
     const {data: {user}} = await supabase.auth.getUser();
-    console.log(user)
     if (!user){
         redirect("/error")
     }
@@ -241,8 +240,7 @@ export async function getColors(limit){
             console.log("error fetching colors: ", colorError)
             return {success: false}
         }
-
-        return {colorData}
+        return colorData
     }
 
     else {
@@ -256,7 +254,7 @@ export async function getColors(limit){
             console.log("error fetching colors: ", colorError)
             return {success: false}
         }
-        return {colorData}
+        return colorData
     }
     
     //console.log("at supabase:", colorData)

@@ -13,15 +13,16 @@ export const Backdrop = styled.div`
     left: 0;
     right: 0;
     display: ${(p) => (p.show ? 'block' : 'none')};
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, .3);
 `
 
 export const ModalWrapper = styled.div`
+
 objectFit: fill
-position: fixed;
+position: absolute;
 top: 50%;
 left: 50%;
-    z-index: 5;
+    z-index: 0;
     transform: translate(10%,0%);
     transform-origin: left top;
     max-width: 100%;
@@ -32,13 +33,19 @@ left: 50%;
 
 const PopModal = ({ modal, show, onClose, children}) => {
     return (
-        <>
+        <div style = {{position: "absolute"}}>
             <Backdrop show = {show} onClick = {onClose} />
-            <ModalWrapper ref = {modal} show = {show}>
+            <div style = {{zIndex: "10"}}>
+                <ModalWrapper ref = {modal} show = {show}>
+                    
                 {children}
-            </ModalWrapper>
         
-        </>
+            
+                </ModalWrapper>
+            </div>
+           
+        
+        </div>
 
     )
 }

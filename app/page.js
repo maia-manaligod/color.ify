@@ -8,7 +8,6 @@ import {GetUser} from '@/components/userInfo'
 import {login, signup, getSupaUser} from '@/lib/actions/supaAuth'
 import {useState, useEffect} from "react"
 
-import { getColors } from '@/components/supabase'
 import RecentSongs from '@/components/RecentSongs'
 import { Navigation } from '@/components/Navigation'
 import { getHomePageInfo } from '@/lib/getHomePageInfo'
@@ -53,7 +52,7 @@ export default function Home() {
               getHomePageInfo().then((result) => {
                 console.log(result)
                 setUserInfo(result.spotifyProfile)
-                setColors(result.recentColors.colorData)
+                setColors(result.recentColors)
                 setRecentSongs(result.recentSongs)
                 setLoginState(1)
                 setLoading(false)
@@ -64,14 +63,7 @@ export default function Home() {
 
           }
       });
-/*
-      if (result){
-        getColors(6).then((results) => {
-          setColors(results.colorData)
-          setLoading(false)
-        })
-      }
-      */
+
       
   }, []);
 
@@ -124,7 +116,10 @@ export default function Home() {
                 <div className = "colPage" style = {{gap: "40px"}}>
                   <div className = "rowPage" style = {{gap: "20px"}}>
                         <img src = {userInfo.pic} style = {{width: "120px", height : "120px", borderRadius: "50%", margin: "10px",marginBottom: "30px"}}></img>
-                        <h1 style = {{fontSize: "40px"}}>{userInfo.name}</h1>
+                        <div className = "colPage">
+                          <h1 style = {{fontSize: "40px"}}>{userInfo.name}</h1>
+                          <a style = {{color: "gray"}} href = {userInfo.url}>see in spotify &gt;&gt;</a>
+                        </div>
                   </div>
 
                   <div>
