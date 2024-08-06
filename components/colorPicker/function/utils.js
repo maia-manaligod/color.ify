@@ -94,12 +94,6 @@ export function HexToHSL(hex){
 
     const res = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(result);
 
-/*
-    if (!result){
-        throw new Error("Could not parse Hex Color")
-    }
-    */
-
     const rHex = parseInt(res[1], 16);
     const gHex = parseInt(res[2], 16);
     const bHex = parseInt(res[3], 16);

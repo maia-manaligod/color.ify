@@ -49,7 +49,7 @@ export const PickerWrapper = styled.div`
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
     .swatchSmall{
-        width: ${squareSize}px;
+        width: ${squareSize * 1.5}px;
         height: ${squareSize * .25}px;
         background: ${(p) => p.color};
         border-radius: 5px;
@@ -61,15 +61,20 @@ export const PickerWrapper = styled.div`
     @keyframes shrink{
         from {
             height: ${squareSize * 11/16}px;
+            width: ${squareSize}px;
         } to {
             height: ${squareSize * .25}px;
+            width: ${squareSize * 1.5}px;
         }
     }
     @keyframes grow {
         from {
             height: ${squareSize * .25}px;
+            width: ${squareSize * 1.5}px;
         } to {
             height: ${squareSize * 11/16}px;
+            width: ${squareSize}px;
+            
         }
 
     }
@@ -128,20 +133,7 @@ const OuterPicker = ({setFinalHex, setShow, setSearched, existingColors}) => {
 
         const ref = useRef()
 
-/*
-        useEffect(() => {
-            getColors().then((result) => {
-                let hues = result.map((item) => {return {name: item.colorName, hsl: HexToHSL(item.hex)[0], hex: item.hex}})
-                console.log(hues)
-                setExistingColors(hues)
-            })
-
-
-        }, [])
-        */
-
         function getColorDiff(array){
-           //console.log(array.name, (Math.abs(array.color[0] - color[0]) + Math.abs(array.color[1] - color[1]) + Math.abs(array.color[2] - color[2])))
             return (Math.abs(array.hsl[0] - color[0]) + Math.abs(array.hsl[1] - color[1]) + Math.abs(array.hsl[2] - color[2]))
         }
 
@@ -219,9 +211,10 @@ const OuterPicker = ({setFinalHex, setShow, setSearched, existingColors}) => {
                 <Picker setFinalHex = {setFinalHex} setCurrentColor={setColor} setHex = {setHex} hex = {hex} currentColor = {color} ref = {ref}/> 
             </div>
             
-            <div className = "colPage" style = {{display: "flex", gap: "30px", alignItems: "end"}}>
+            <div className = "colPage" style = {{ width : (finalHex ? squareSize * 1.5 : squareSize) , border : "2px solid", display: "flex", gap: "30px", alignItems: "end"}}>
+                    <div style = {{border : "2px solid orange"}}>
+                    </div>
                     <PickerInner>
-                        <a></a>
                         <div id = "swatch" className='swatch' />
                         </PickerInner>
 
@@ -249,13 +242,17 @@ const OuterPicker = ({setFinalHex, setShow, setSearched, existingColors}) => {
                         </div>
                         }
                         
-                       <div className = "rowPage" style = {{width: squareSize, justifyContent: "space-between"}}>
+                       <div className = "rowPage" style = {{border : "2px solid red", width: finalHex ? squareSize * 1.5 : squareSize , justifyContent: finalHex ? "space-between" : "end"}}>
+                        
+                    
+ 
                         
                             <button className = {hex == ''? "disabled" : ""} style = {{width: "100px" , height: "40px"}}onClick = {onFinalizeHex}>{finalHex ? "Back" : "Next"} </button>
-                            {finalHex &&
+                           
+                           {finalHex &&
                                 <>
                                     <a>hex: {hex}</a>
-                                    <button style = {{width: "100px" , height: "40px"}} onClick={() => setShow(true)}>save</button>
+                                    <button style = {{width: "100px" , height: "40px"}} onClick={() => setShow(true)}>Save</button>
                                 </> }
                        </div>
                       

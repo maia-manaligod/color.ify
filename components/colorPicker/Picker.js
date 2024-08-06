@@ -38,7 +38,7 @@ export const PickerWrapper = styled.div`
     justify-content: start;
     gap: 10px;
     .swatch{
-        width: ${squareSize}px;
+        width: ${squareSize * .5}px;
         height: ${squareSize * 11/16}px;
         background: ${(p) => p.color};
         border-radius: 5px;
@@ -47,7 +47,7 @@ export const PickerWrapper = styled.div`
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
     .swatchSmall{
-        width: ${squareSize}px;
+        width: ${squareSize * 2}px;
         height: ${squareSize * .25}px;
         background: ${(p) => p.color};
         border-radius: 5px;
@@ -59,15 +59,19 @@ export const PickerWrapper = styled.div`
     @keyframes shrink{
         from {
             height: ${squareSize * 11/16}px;
+            width: ${squareSize};
         } to {
             height: ${squareSize * .25}px;
+            width: ${squareSize * 2};
         }
     }
     @keyframes grow {
         from {
             height: ${squareSize * .25}px;
+            width: ${squareSize * 2};
         } to {
             height: ${squareSize * 11/16}px;
+            width: ${squareSize };
         }
 
     }
@@ -97,20 +101,12 @@ export const PickerInner = styled.div`
         background-color: white;
     }
     .button:hover {
-        background-color: #04AA6D; /* Green */
+        background-color: #04AA6D;
         color: white;
     }
 
 `
-/*
-export const Inputs = styled.div`
-    width: 100%;
-    display: flex;
-    padding: 10px;
-    align-items: left;
-    justify-items: start;
-`
-*/
+
 function computeHueX(h){
     return Math.round((squareSize / 360 * h - barSize / 2 ))
 }
@@ -180,29 +176,6 @@ const Picker = forwardRef(({setFinalHex, setCurrentColor, setHex, hex, currentCo
             onHexChange,
         };
     }, []);
-
-/*
-    function onHueChange(n){
-        //setAnimate(true)
-        setHue(n)
-        setHueX(computeHueX(n))
-        setHex(HSLToHex(n, square[0], square[1]))
-    }
-
-    function onSaturationChange(n){
-        //setAnimate(true) 
-        setSquare([n, square[1]])
-        setSquareXY(computeSquareXY(n, square[1]))
-        setHex(HSLToHex(hue, n, square[1]))
-    }
-
-    function onLightnessChange(n){
-        //setAnimate(true)
-        setSquare([square[0], n])
-        setSquareXY(computeSquareXY(square[0], n))
-        setHex(HSLToHex(hue, square[0], n))
-    }
-    */
 
     function onHexChange([n, h]){
         console.log("onHexChange")
@@ -291,47 +264,3 @@ const Picker = forwardRef(({setFinalHex, setCurrentColor, setHex, hex, currentCo
 });
 
 export default Picker
-
-
-/*
-   <Sat
-                                    satX = {satX}
-                                    offsetLeft = {offsetLeft}
-                                    setSatX = {setSatX}
-                                    setSquare = {setSquare}
-                                    setHex = {setHex}
-                                    hue = {hue}
-                                    light = {square[1]}
-                                />
-                                
-                                <a>hue {hue} sat {square[0]} lightness {square[1]}</a>
-                                <a>{hex}</a>
-                                <Inputs>
-                                    
-                                    <Input
-                                        label = 'H'
-                                        value = {hue}
-                                        min = {0}
-                                        max = {360}
-                                        defaultValue = {180}
-                                        setValue = {onHueChange}
-                                    />
-                                    <Input
-                                        label = 'S'
-                                        value = {square[0]}
-                                        min = {0}
-                                        max = {100}
-                                        defaultValue = {100}
-                                        setValue = {onSaturationChange}
-                                    />
-                                    <Input
-                                        label = 'L'
-                                        value = {square[1]}
-                                        min = {0}
-                                        max = {100}
-                                        defaultValue = {100}
-                                        setValue = {onLightnessChange}
-                                    />
-                                </Inputs>
-                               
-*/

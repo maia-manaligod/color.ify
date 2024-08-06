@@ -63,8 +63,4 @@ export async function GET(request) {
       state: state
     }));
   }
-  /*
-
-    
-    */
 }

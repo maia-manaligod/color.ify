@@ -70,42 +70,11 @@ export default function(){
             return item.Song.props.object
         })
         console.log(songs)
-        /*
-        console.log("songs:", songs)
-
-        const songsArray = selected.map((item) => {
-            return {hex: hex, name: item.Song.props.object.name, song_id: item.Song.props.object.id, 
-            artists: item.Song.props.object.artists, 
-            album_id: item.Song.props.object.album.id, album: item.Song.props.object.album.name, 
-            image_url: item.Song.props.object.album.images[0].url, 
-            spotify_uri: item.Song.props.object.uri}
-        });
-        console.log("selected: ", selected)
-
-        console.log("songs array;" , songsArray)
-*/
         pushSongs(hex, songs).then(
             () => {
                 router.push('/colors')
             }
         )
-/*
-        const pushSongPromises = selected.map(item => {
-            pushSong(hex, item.Song.props.object.name, item.Song.props.object.id, 
-                item.Song.props.object.artists, 
-                item.Song.props.object.album.id, item.Song.props.object.album.name, 
-                item.Song.props.object.album.images[0].url, 
-                item.Song.props.object.uri
-            );
-        })
-        //console.log("pushing at page: ", selected, hex)
-        Promise.allSettled(pushSongPromises).then((results) => {
-            console.log("songs pushed", results)
-            //router.push('/colors')
-            console.log("router?")
-        })
-        */
-      
     }
 
 
@@ -117,7 +86,7 @@ export default function(){
         <div className = "stpage" style = {{display: "flex", justifyContent: "center"}}>
 
             <div className = "rowPage" style = {{display: "flex"}}>
-
+            {hex && <div style = {{width: "150px", border: "2px solid orange"}}></div>}
             
             <div style = {{position: "absolute"}}>
             {setSearched && 
@@ -179,6 +148,7 @@ export default function(){
 
                 <div className = "colPage" style = {{  justifyContent: "center" , border: "2px solid blue", zIndex: 0}}>
                     {!hex && <a>select a color to get started</a>}
+                    
                     <div style = {{border: "2px solid green"}}>
                         <OuterPicker setFinalHex = {setFinalHex} setShow = {setShow} setSearched = {setSearched} existingColors = {existingColors}/>
                     </div>

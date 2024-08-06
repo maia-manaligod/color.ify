@@ -69,17 +69,6 @@ export default function color(hex){
             setColorHex("#" + hex.params.hex)
             
         })
-        /*
-        getSongs(hex.params.hex).then((results) => {
-            setSongs(results.data)
-            getColorInfo(hex.params.hex).then((results) => {
-                setColorInfo(results.data)
-                setPlaylist(colorInfo.linked_playlist)
-                setColorHex("#" + hex.params.hex)
-    
-            })
-        })
-        */
     }
     , [])
 
@@ -145,29 +134,7 @@ export default function color(hex){
         if (playlist.id != null) {addTracks([Song.spotify_uri, playlist.id])}
     }
 
-    
-    
 
-
-/*
-    useEffect ( () => {
-        getColorInfo(hex.params.hex)
-        .then((results) => {
-            console.log(results)
-            setColorInfo(results.data[0]);
-            setColorLoading(false)
-        });
-
-        getSongs(hex.params.hex)
-        .then((result) => {
-            console.log("songs", result)
-            setSongs(result.data)
-            setSongsLoading(false)
-        })
-
-        
-    }, [])
-*/
 
     return (
         

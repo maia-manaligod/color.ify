@@ -98,64 +98,6 @@ export async function pushSongs(color, array){
     catch (err){
         console.log("ERROR: ", err)
     }  
-
-
-/*
-    let artArray = []
-    let artIDArray = []
-    artists.forEach(item => {
-        artArray.push(item.name)
-        artIDArray.push(item.id)
-    }
-    )
-       
-    
-    console.log("artist array: ", artArray)
-    console.log("artistID", artIDArray)
-
-    console.log("in supabase: ", color, name, id, album_id, albumName)
-
-
-    const songObj = {
-        song_id: id, 
-        name: name,
-        color: color, 
-        user : user.id, 
-        artist: artArray, 
-        artist_id: artIDArray, 
-        album: albumName, 
-        album_id: album_id, 
-        image_url : image, 
-        spotify_uri: uri
-    }
-
-    const songs_colorsObj = {
-        song_uri: uri, 
-        song_color: color,
-        user_id: user.id
-    }
-
-    try {
-        const {error} = await supabase.from("songs").upsert(songObj, {onConflict: 'spotify_uri'})
-        if (error){
-            console.log(error)
-        } else {
-            console.log("song push successful")
-            const {error2} = await supabase.from("songs_colors").insert(songs_colorsObj)
-
-            if (error2){
-                console.log("error pushing solor link" , error2)
-            } else {
-                return {success: true}
-            } 
-        }
-    }
-
-    catch (err){
-        console.log("ERROR: ", err)
-    }  
-    */
-
 }
 
 export async function pushSong(color, name, id, artists, album_id, albumName, image, uri){
@@ -299,12 +241,6 @@ export async function getSongs(hex){
     let hexColor = "#" + hex; 
     console.log("color: ", hexColor)
 
-    /*
-    const {data: songData, error: error} = await supabase
-    .from('songs')
-    .select('name, artist, album, image_url, spotify_uri')
-    .match({user: user.id, color: hexColor})
-    */
    const {data: songData, error: error} = await supabase
    .rpc('get_songs_by_color', {user_color: hexColor, user_id: user.id })
 
@@ -328,12 +264,6 @@ export async function removeSongs(song, color){
         console.log("ERROR: NO USER")
     }
 
-   // console.log("at supabase remove song: ", songsArray)
-/*
-    songsArray.forEach((item) => {
-        list.push(item.spotify_uri)
-    })
-    */
 
     const {data: data, error: error} = await supabase
         .from('songs_colors')
@@ -431,14 +361,7 @@ export async function getRecentSongs(offset, limit){
 
     if (!user){console.log("error retreiving user when fetching recent songs")
         return null}
-/*
-    const {data: data, error: error} = await supabase
-        .from('songs')
-        .select("*")
-        .eq('user', user.id)
-        .range(start, end)
-        .order('created_at', { ascending: false });
-*/
+
     else {
         const {data: data, error: error} = await supabase
         .rpc('get_recently_added_songs', {offset_int: offset, number: limit, user_info : user.id})

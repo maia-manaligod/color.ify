@@ -29,24 +29,12 @@ export default function colorPage(){
             setColors(temp2.sort((a, b) => {
                 return ( (HexToHSL(a.hex)[0][0] > HexToHSL(b.hex)[0][0]) ? 1 : -1)
             }))
-                /*
-            )
-            const sort = 
-            temp.sort((a, b) => {
-                return ( (HexToHSL(a.hex)[0][0] > HexToHSL(b.hex)[0][0]) ? 1 : -1)
-            })
-            console.log(sort)
-            console.log(temp)
-            */
+              
             setColors(temp2)
             console.log(colors)
             setSorted(true)
           
-            /*setColors(
-                colors.colorData.sort((a, b) => {
-                    return ( (HexToHSL(a.hex)[0][0] > HexToHSL(b.hex)[0][0]) ? 1 : -1)
-                }
-            ))*/
+          
         } 
         else {
             setSorted(!sorted)
@@ -59,12 +47,6 @@ export default function colorPage(){
         setOtherColors(temp)
     }
 
-
-/*
-    const colorSort = colors.colorData.sort((a, b) => 
-        (HexToHSL(a.hex)[0][0] > HexToHSL(b.hex)[0][0]) ? 1 : -1);
-    console.log(colors, colorSort)
-*/
 
     return (
         
@@ -123,72 +105,3 @@ export default function colorPage(){
     );
 
 }
-
-
-/*
-"use client"
-
-import { Navigation } from "@/components/navigation"
-
-import { useState, useEffect } from "react"
-import { getColors } from "@/components/supabase"
-
-export default function colorPage(){
-
-    const [colors, setColors] = useState([])
-    const [loading, setLoading] = useState(true)
-
-    useEffect ( () => {
-        getColors()
-        .then((results) => {
-            console.log("before: ", colors)
-            setColors(results.colorData)
-            console.log(results.colorData)
-            
-            
-            setLoading(false)
-            console.log("colors:", colors)
-            
-
-        });
-    }, [])
-
- 
-
-    return (
-        <div>
-              <Navigation/>
-              <div className = "stpage">    
-              {loading ? ( <div>loading...</div> ) : (
-
-                    <div className = "rowPage" style = {{gap: "40px"}}>
-                        {colors.map((item) => (
-                        <a href = {'/colors/' + item.hex.substring(1)}>
-                             <div className = "colPage" style = {{border: "2px solid green"}}>
-                                <div style = {{width: "150px", height: "150px", backgroundColor: item.hex}}>
-                                </div>
-                                <a>{item.colorName}</a>
-                          
-                            </div>
-
-                        </a>
-                         
-                        ))}
-                    </div>
-                )}
-
-              </div>
-        </div>
-    );
-
-}
-*/
-
-/*
-  <div className = "rowPage">
-                         <a>{item}</a>
-                        <div style = {{width: "200px", height: "200px", backgroundColor: item.hex}}></div>
-                        <a>{item.colorName}</a>
-                    </div>
-
-                    */

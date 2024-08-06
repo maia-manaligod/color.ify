@@ -20,28 +20,7 @@ export default function SongPage(){
         })
     }, [])
 
-    
-
-
-//search filter (client side)
-/*
-    const searchFilter = (array) => {
-        const regEx = new RegExp(`\\b${query}`, 'i')
-        return array.filter(
-            (el) => regEx.test(el.name) || regEx.test(el.album) || 
-                el.artist.some((item) => regEx.test(item))
-        )  
-    }
-
-    const filtered = searchFilter(songs)
-
-    const handleChange = (e) => {
-        setQuery(e.target.value)
-    }
-
-    <input onChange = {handleChange} type = 'text'/>
-*/
-
+    //search filter
     function search(e){
         e.preventDefault(); 
         const formData = new FormData(e.target);

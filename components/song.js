@@ -1,35 +1,6 @@
 
 import styled from "styled-components";
 
-/*
-export const SongOuter = styled.div`
-    width: 700px;
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    gap: 10px;
-    padding: 10px;
-
-    .img {
-        margin-top: 10px;
-    }
-`
-export const SongInner = styled.div`
-    white-space: normal; 
-    word-wrap: break-word; 
-    overflow-wrap: break-word;
-    word-break: break-word;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 1px;
-    line-height: 0px;
-    align-text: left;
-
-    
-`
-*/
-
 export function Song({object}) {
     let artists = "";
 
@@ -42,7 +13,7 @@ export function Song({object}) {
     return (
         <div className = "songOuter">
            
-            <img src = {object.album.images[0].url} height = {50} width = {50}/>
+            <img src = {object.album.images[0].url} height = {50} width = {50} style = {{borderRadius: "2px"}}/>
 
             <div className = "songInner">
                 <h4>{object.name}</h4>
@@ -68,7 +39,7 @@ export function SongSupabase({object}) {
     return (
         <div className = "songOuter">
            
-            <img src = {object.image_url} height = {50} width = {50}/>
+            <img src = {object.image_url} height = {50} width = {50} style = {{borderRadius: "2px"}}/>
 
             <div className = "songInner">
                 <h4>{object.name}</h4>
@@ -89,7 +60,7 @@ export function SongWithColor({object}){
         <div className = "rowPage"> 
             <SongSupabase object = {object}/>
             {object.songs_colors == null && <a href = {'/colors/' + object.song_color.substring(1)}> 
-                <div style = {{width: "60px", height: "60px", backgroundColor: object.song_color}}></div>
+                <div style = {{width: "60px", height: "60px", backgroundColor: object.song_color, borderRadius: "30px"}}></div>
             </a>
             }
 
@@ -97,7 +68,7 @@ export function SongWithColor({object}){
            {object.songs_colors != null && 
                 ((object.songs_colors.length > 4 ) ? object.songs_colors.slice(0,4) : object.songs_colors).map((item) => 
                 <a href = {'/colors/' + item.substring(1)}>
-                    <div style = {{width: "60px", height: "60px", backgroundColor: item, margin: "10px"}}></div>
+                    <div style = {{width: "60px", height: "60px", borderRadius: "30px", backgroundColor: item, margin: "10px"}}></div>
                 </a>
             )
            } 

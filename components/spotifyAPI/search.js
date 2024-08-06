@@ -88,12 +88,6 @@ export default function SongSearch({selected, setSelected}){
     
 }
 
-/* {result.map(item => (
-                    <Song object = {item} />
-                ))}*/
-
-
-
 export function SongSearchSmall({hex, songArray, addToArray, playlist}){
     const [result, setResult] = useState({});
     const[loading, setLoading] = useState(false);
@@ -170,11 +164,11 @@ export function SongSearchSmall({hex, songArray, addToArray, playlist}){
 
         {searched && result &&
             <div>
-                <ul>
+          
                     {result.map(item => (
                         <SongSelect key = {item.uri} Song = {<Song object = {item} />} addSong = {addSong} removeSong = {null}/>
                     ))}
-                </ul> 
+      
             </div>
         }
        
